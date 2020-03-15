@@ -1,15 +1,25 @@
 package controllers
 
+import (
+	"github.com/gin-gonic/gin"
+
+	"clean-architechure-golang/services"
+)
+
 type MusicController interface {
-	FindAll()
+	FindAll(*gin.Context)
 }
 
-type musicController struct{}
-
-func NewMusicController() MusicController {
-	return &musicController{}
+type musicController struct {
+	service services.MusicService
 }
 
-func (c *musicController) FindAll() {
+func NewMusicController(service services.MusicService) MusicController {
+	return &musicController{
+		service: service,
+	}
+}
 
+func (controller *musicController) FindAll(c *gin.Context) {
+	controller.service.FindAll()
 }
