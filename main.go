@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 
+	"clean-architechure-golang/config"
 	"clean-architechure-golang/controllers"
 	"clean-architechure-golang/repositories"
 	"clean-architechure-golang/services"
@@ -18,7 +19,10 @@ var (
 )
 
 func main() {
+	config.ReadConf()
+
 	r := gin.Default()
+	gin.SetMode(getGinMode())
 
 	music := r.Group("/api/v1/music")
 	{
@@ -35,5 +39,14 @@ func main() {
 		company.GET("/list")
 	}
 
-	r.Run(":8080")
+	r.Run(config.Conf.Web.Host + ":" + config.Conf.Web.Port)
+}
+
+func getGinMode() string {
+	// AppEnv : dev or stg or prd
+	appEnv := config.Conf.App.AppEnv
+	if appEnv == "prd" {
+		return gin.ReleaseMode
+	}
+	return gin.DebugMode
 }

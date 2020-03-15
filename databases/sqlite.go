@@ -1,7 +1,11 @@
 package databases
 
 import (
+	"log"
+
 	"github.com/jinzhu/gorm"
+
+	"clean-architechure-golang/config"
 )
 
 type sqlite struct{}
@@ -11,5 +15,9 @@ func newSqlite() Database {
 }
 
 func (*sqlite) DbConnection() *gorm.DB {
-	return nil
+	db, err := gorm.Open(config.Conf.Database.Driver, config.Conf.Database.SourceName)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return db
 }

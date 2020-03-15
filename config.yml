@@ -1,0 +1,13 @@
+app:
+  appEnv: "dev"  # develop: dev or staging: stg or production: prd
+
+web:
+  host: "localhost"
+  port: "8080"
+
+database:
+  driver: "sqlite3"
+  sourcePath: "data/"
+  sourceName: "artist.db"
+  username: ""
+  password: ""
