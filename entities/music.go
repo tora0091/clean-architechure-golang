@@ -3,36 +3,36 @@ package entities
 import "time"
 
 type Music struct {
-	ID        int    `json:"id"`
-	ISWC      string `json:"iswc"`
-	Title     string `json:"title"`
-	Time      int    `json:"time"`
-	Genre     string `json:"genre"`
-	Artist    int    `json:"artist"`
-	Company   int    `json:"company"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt time.Time
+	ID        int       `json:"id" gorm:"primary_key, column:id"`
+	ISWC      string    `json:"iswc" gorm:"column:iswc"`
+	Title     string    `json:"title" gorm:"column:title"`
+	Time      int       `json:"time" gorm:"column:time"`
+	Genre     string    `json:"genre" gorm:"column:genre"`
+	Artist    int       `json:"artist" gorm:"column:artist"`
+	Company   int       `json:"company" gorm:"column:company"`
+	CreatedAt time.Time `gorm:"column:created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at"`
+	DeletedAt time.Time `gorm:"column:deleted_at"`
 }
 
 type Artist struct {
-	ID        int    `json:"id"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	Birth     string `json:"birth"`
-	Gender    string `json:"gender"`
-	Address   string `json:"address"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt time.Time
+	ID        int       `json:"id" gorm:"primary_key, column:id"`
+	Name      string    `json:"name" gorm:"column:name"`
+	Email     string    `json:"email" gorm:"column:email"`
+	Birth     string    `json:"birth" gorm:"column:birth"`
+	Gender    string    `json:"gender" gorm:"column:gender"`
+	Address   string    `json:"address" gorm:"column:address"`
+	CreatedAt time.Time `gorm:"column:created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at"`
+	DeletedAt time.Time `gorm:"column:deleted_at"`
 }
 
 type Company struct {
-	ID        int    `json:"id"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	Address   string `json:"address"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt time.Time
+	ID        int       `json:"id" gorm:"primary_key, column:id"`
+	Name      string    `json:"name" gorm:"column:name"`
+	Email     string    `json:"email" gorm:"column:email"`
+	Address   string    `json:"address" gorm:"column:address"`
+	CreatedAt time.Time `gorm:"column:created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at"`
+	DeletedAt time.Time `gorm:"column:deleted_at"`
 }
