@@ -22,6 +22,9 @@ type config struct {
 		Username   string
 		Password   string
 	}
+	Table struct {
+		Artist string
+	}
 }
 
 var Conf config

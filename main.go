@@ -27,9 +27,10 @@ func main() {
 	// 	music.GET("/list", musicController.FindAll)
 	// }
 
-	artist := r.Group("/api/v1/artist")
+	artist := r.Group("/api/v1")
 	{
-		artist.GET("/list", handlers.ArtistHandler(dbconn).FindAll)
+		artist.GET("/artists", handlers.ArtistHandler(dbconn).FindAll)
+		artist.POST("/artist", handlers.ArtistHandler(dbconn).Save)
 	}
 
 	// company := r.Group("/api/v1/company")

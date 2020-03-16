@@ -11,3 +11,6 @@ database:
   sourceName: "artist.db"
   username: ""
   password: ""
+
+table:
+  artist: "artist"
