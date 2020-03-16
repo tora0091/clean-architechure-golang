@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -18,12 +19,16 @@ type MusicService interface {
 }
 
 type musicService struct {
-	repository repositories.MusicRepository
+	repository        repositories.MusicRepository
+	artistRepository  repositories.ArtistRepository
+	companyRepository repositories.CompanyRepository
 }
 
-func NewMusicService(repository repositories.MusicRepository) MusicService {
+func NewMusicService(repository repositories.MusicRepository, artistRepository repositories.ArtistRepository, companyRepository repositories.CompanyRepository) MusicService {
 	return &musicService{
-		repository: repository,
+		repository:        repository,
+		artistRepository:  artistRepository,
+		companyRepository: companyRepository,
 	}
 }
 
@@ -34,6 +39,10 @@ func (service *musicService) FindAll() ([]*entities.Music, error) {
 func (service *musicService) Save(c *gin.Context) (*entities.Music, error) {
 	music, err := getRequestParamMusic(c)
 	if err != nil {
+		return nil, err
+	}
+
+	if err = service.checkIDs(music); err != nil {
 		return nil, err
 	}
 
@@ -70,6 +79,10 @@ func (service *musicService) UpdateByID(c *gin.Context) (*entities.Music, error)
 		return nil, err
 	}
 
+	if err = service.checkIDs(updateMusic); err != nil {
+		return nil, err
+	}
+
 	// TODO: validation
 
 	updateMusic.UpdatedAt = time.Now()
@@ -91,5 +104,19 @@ func (service *musicService) DeleteByID(c *gin.Context) error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (service *musicService) checkIDs(music *entities.Music) error {
+	_, err := service.artistRepository.FindByID(music.ArtistID)
+	if err != nil {
+		return fmt.Errorf("Artist ID is not Found. Check your artist ID")
+	}
+
+	_, err = service.companyRepository.FindByID(music.CompanyID)
+	if err != nil {
+		return fmt.Errorf("Company ID is not Found. Check your company ID")
+	}
+
 	return nil
 }

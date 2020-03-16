@@ -10,7 +10,9 @@ import (
 
 func MusicHandler(dbconn *gorm.DB) controllers.MusicController {
 	musicRepository := repositories.NewMusicRepository(dbconn)
-	musicService := services.NewMusicService(musicRepository)
+	artistRepository := repositories.NewArtistRepository(dbconn)
+	companyRepository := repositories.NewCompanyRepository(dbconn)
+	musicService := services.NewMusicService(musicRepository, artistRepository, companyRepository)
 	musicController := controllers.NewMusicController(musicService)
 	return musicController
 }
