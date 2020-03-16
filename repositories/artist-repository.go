@@ -12,10 +12,10 @@ import (
 
 type ArtistRepository interface {
 	FindAll() ([]*entities.Artist, error)
-	Save(artist *entities.Artist) (*entities.Artist, error)
-	FindByID(id int) (*entities.Artist, error)
-	UpdateByID(id int, updateData *entities.Artist) (*entities.Artist, error)
-	DeleteByID(id int) error
+	Save(*entities.Artist) (*entities.Artist, error)
+	FindByID(int) (*entities.Artist, error)
+	UpdateByID(int, *entities.Artist) (*entities.Artist, error)
+	DeleteByID(int) error
 }
 
 type artistRepository struct {

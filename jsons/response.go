@@ -28,3 +28,13 @@ type StatusAndCompanyList struct {
 	Status int                 `json:"status"`
 	Data   []*entities.Company `json:"data"`
 }
+
+type StatusAndMusic struct {
+	Status int             `json:"status"`
+	Data   *entities.Music `json:"data"`
+}
+
+type StatusAndMusicList struct {
+	Status int               `json:"status"`
+	Data   []*entities.Music `json:"data"`
+}

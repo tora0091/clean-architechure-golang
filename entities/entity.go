@@ -8,8 +8,8 @@ type Music struct {
 	Title     string     `json:"title" gorm:"column:title"`
 	Time      int        `json:"time" gorm:"column:time"`
 	Genre     string     `json:"genre" gorm:"column:genre"`
-	Artist    int        `json:"artist" gorm:"column:artist"`
-	Company   int        `json:"company" gorm:"column:company"`
+	ArtistID  int        `json:"artist_id" gorm:"column:artist_id"`
+	CompanyID int        `json:"company_id" gorm:"column:company_id"`
 	CreatedAt time.Time  `json:"created_at" gorm:"column:created_at"`
 	UpdatedAt time.Time  `json:"updated_at" gorm:"column:updated_at"`
 	DeletedAt *time.Time `json:"deleted_at" gorm:"column:deleted_at"`

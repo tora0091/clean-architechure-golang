@@ -8,6 +8,16 @@ import (
 	"clean-architechure-golang/entities"
 )
 
+func getRequestParamMusic(c *gin.Context) (*entities.Music, error) {
+	var music entities.Music
+
+	err := c.BindJSON(&music)
+	if err != nil {
+		return nil, err
+	}
+	return &music, nil
+}
+
 func getRequestParamArtist(c *gin.Context) (*entities.Artist, error) {
 	var artist entities.Artist
 

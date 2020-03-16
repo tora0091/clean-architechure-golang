@@ -22,10 +22,14 @@ func main() {
 	r := gin.Default()
 	gin.SetMode(getGinMode())
 
-	// music := r.Group("/api/v1/music")
-	// {
-	// 	music.GET("/list", musicController.FindAll)
-	// }
+	music := r.Group("/api/v1")
+	{
+		music.GET("/musics", handlers.MusicHandler(dbconn).FindAll)
+		music.POST("/music", handlers.MusicHandler(dbconn).Save)
+		music.GET("/music/:id", handlers.MusicHandler(dbconn).FindByID)
+		music.PUT("/music/:id", handlers.MusicHandler(dbconn).UpdateByID)
+		music.DELETE("/music/:id", handlers.MusicHandler(dbconn).DeleteByID)
+	}
 
 	artist := r.Group("/api/v1")
 	{
