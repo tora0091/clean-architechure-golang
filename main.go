@@ -31,6 +31,9 @@ func main() {
 	{
 		artist.GET("/artists", handlers.ArtistHandler(dbconn).FindAll)
 		artist.POST("/artist", handlers.ArtistHandler(dbconn).Save)
+		artist.GET("/artist/:id", handlers.ArtistHandler(dbconn).FindByID)
+		artist.PUT("/artist/:id", handlers.ArtistHandler(dbconn).UpdateByID)
+		artist.DELETE("/artist/:id", handlers.ArtistHandler(dbconn).DeleteByID)
 	}
 
 	// company := r.Group("/api/v1/company")
