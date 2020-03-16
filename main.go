@@ -1,55 +1,29 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 
 	"clean-architechure-golang/config"
 	"clean-architechure-golang/databases"
-	"clean-architechure-golang/handlers"
+	"clean-architechure-golang/router"
 )
-
-// var (
-// 	musicService    = services.NewMusicService()
-// 	musicController = controllers.NewMusicController(musicService)
-// )
 
 func main() {
 	config.ReadConf()
 
 	dbconn := databases.NewDatabase().DbConnection()
 
-	r := gin.Default()
 	gin.SetMode(getGinMode())
+	r := router.InitRouter(dbconn)
 
-	music := r.Group("/api/v1")
-	{
-		music.GET("/musics", handlers.MusicHandler(dbconn).FindAll)
-		music.POST("/music", handlers.MusicHandler(dbconn).Save)
-		music.GET("/music/:id", handlers.MusicHandler(dbconn).FindByID)
-		music.PUT("/music/:id", handlers.MusicHandler(dbconn).UpdateByID)
-		music.DELETE("/music/:id", handlers.MusicHandler(dbconn).DeleteByID)
+	s := &http.Server{
+		Addr:    config.Conf.Web.Host + ":" + config.Conf.Web.Port,
+		Handler: r,
 	}
-
-	artist := r.Group("/api/v1")
-	{
-		artist.GET("/artists", handlers.ArtistHandler(dbconn).FindAll)
-		artist.POST("/artist", handlers.ArtistHandler(dbconn).Save)
-		artist.GET("/artist/:id", handlers.ArtistHandler(dbconn).FindByID)
-		artist.PUT("/artist/:id", handlers.ArtistHandler(dbconn).UpdateByID)
-		artist.DELETE("/artist/:id", handlers.ArtistHandler(dbconn).DeleteByID)
-	}
-
-	company := r.Group("/api/v1")
-	{
-		company.GET("/companies", handlers.CompanyHandler(dbconn).FindAll)
-		company.POST("/company", handlers.CompanyHandler(dbconn).Save)
-		company.GET("/company/:id", handlers.CompanyHandler(dbconn).FindByID)
-		company.PUT("/company/:id", handlers.CompanyHandler(dbconn).UpdateByID)
-		company.DELETE("/company/:id", handlers.CompanyHandler(dbconn).DeleteByID)
-	}
-
-	r.Run(config.Conf.Web.Host + ":" + config.Conf.Web.Port)
+	s.ListenAndServe()
 }
 
 func getGinMode() string {
