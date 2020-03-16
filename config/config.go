@@ -23,7 +23,9 @@ type config struct {
 		Password   string
 	}
 	Table struct {
-		Artist string
+		Music   string
+		Artist  string
+		Company string
 	}
 }
 

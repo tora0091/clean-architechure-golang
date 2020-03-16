@@ -1,7 +1,6 @@
 package services
 
 import (
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -33,7 +32,7 @@ func (service *artistService) FindAll() ([]*entities.Artist, error) {
 }
 
 func (service *artistService) Save(c *gin.Context) (*entities.Artist, error) {
-	artist, err := getRequestParam(c)
+	artist, err := getRequestParamArtist(c)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +65,7 @@ func (service *artistService) UpdateByID(c *gin.Context) (*entities.Artist, erro
 		return nil, err
 	}
 
-	updateArtist, err := getRequestParam(c)
+	updateArtist, err := getRequestParamArtist(c)
 	if err != nil {
 		return nil, err
 	}
@@ -93,23 +92,4 @@ func (service *artistService) DeleteByID(c *gin.Context) error {
 		return err
 	}
 	return nil
-}
-
-func getRequestParam(c *gin.Context) (*entities.Artist, error) {
-	var artist entities.Artist
-
-	err := c.BindJSON(&artist)
-	if err != nil {
-		return nil, err
-	}
-	return &artist, nil
-}
-
-func getIDParam(c *gin.Context) (int, error) {
-	param := c.Param("id")
-	id, err := strconv.Atoi(param)
-	if err != nil {
-		return id, err
-	}
-	return id, nil
 }

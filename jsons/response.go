@@ -18,3 +18,13 @@ type StatusAndArtistList struct {
 	Status int                `json:"status"`
 	Data   []*entities.Artist `json:"data"`
 }
+
+type StatusAndCompany struct {
+	Status int               `json:"status"`
+	Data   *entities.Company `json:"data"`
+}
+
+type StatusAndCompanyList struct {
+	Status int                 `json:"status"`
+	Data   []*entities.Company `json:"data"`
+}

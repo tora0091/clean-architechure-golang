@@ -13,4 +13,6 @@ database:
   password: ""
 
 table:
+  music: "music"
   artist: "artist"
+  company: "company"

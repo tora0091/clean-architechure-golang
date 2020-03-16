@@ -32,6 +32,7 @@ func (controller *artistController) FindAll(c *gin.Context) {
 	artists, err := controller.service.FindAll()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, jsons.StatusAndArtistList{Status: http.StatusOK, Data: artists})
 }
@@ -41,6 +42,7 @@ func (controller *artistController) Save(c *gin.Context) {
 	artist, err := controller.service.Save(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, jsons.StatusAndArtist{Status: http.StatusOK, Data: artist})
 }
@@ -50,6 +52,7 @@ func (controller *artistController) FindByID(c *gin.Context) {
 	artist, err := controller.service.FindByID(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, jsons.StatusAndArtist{Status: http.StatusOK, Data: artist})
 }
@@ -59,6 +62,7 @@ func (controller *artistController) UpdateByID(c *gin.Context) {
 	artist, err := controller.service.UpdateByID(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, jsons.StatusAndArtist{Status: http.StatusOK, Data: artist})
 }
@@ -68,6 +72,7 @@ func (controller *artistController) DeleteByID(c *gin.Context) {
 	err := controller.service.DeleteByID(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, jsons.StatusAndMessage{Status: http.StatusOK, Message: http.StatusText(http.StatusOK)})
 }

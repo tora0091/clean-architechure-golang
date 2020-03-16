@@ -36,10 +36,14 @@ func main() {
 		artist.DELETE("/artist/:id", handlers.ArtistHandler(dbconn).DeleteByID)
 	}
 
-	// company := r.Group("/api/v1/company")
-	// {
-	// 	company.GET("/list")
-	// }
+	company := r.Group("/api/v1")
+	{
+		company.GET("/companies", handlers.CompanyHandler(dbconn).FindAll)
+		company.POST("/company", handlers.CompanyHandler(dbconn).Save)
+		company.GET("/company/:id", handlers.CompanyHandler(dbconn).FindByID)
+		company.PUT("/company/:id", handlers.CompanyHandler(dbconn).UpdateByID)
+		company.DELETE("/company/:id", handlers.CompanyHandler(dbconn).DeleteByID)
+	}
 
 	r.Run(config.Conf.Web.Host + ":" + config.Conf.Web.Port)
 }
