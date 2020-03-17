@@ -38,6 +38,16 @@ func getRequestParamCompany(c *gin.Context) (*entities.Company, error) {
 	return &company, nil
 }
 
+func getRequestParamMusicAll(c *gin.Context) (*entities.MusicStructResponse, error) {
+	var music entities.MusicStructResponse
+
+	err := c.BindJSON(&music)
+	if err != nil {
+		return nil, err
+	}
+	return &music, nil
+}
+
 func getIDParam(c *gin.Context) (int, error) {
 	param := c.Param("id")
 	id, err := strconv.Atoi(param)

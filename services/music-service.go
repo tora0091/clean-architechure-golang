@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 
 	"clean-architechure-golang/entities"
 	"clean-architechure-golang/repositories"
@@ -17,18 +18,20 @@ type MusicService interface {
 	UpdateByID(c *gin.Context) (*entities.Music, error)
 	DeleteByID(c *gin.Context) error
 	FindAllData() ([]*entities.MusicStructResponse, error)
-	SaveAllData(c *gin.Context)
+	SaveAllData(c *gin.Context) (*entities.MusicStructResponse, error)
 	FindAllDataByID(c *gin.Context) (*entities.MusicStructResponse, error)
 }
 
 type musicService struct {
+	conn              *gorm.DB
 	repository        repositories.MusicRepository
 	artistRepository  repositories.ArtistRepository
 	companyRepository repositories.CompanyRepository
 }
 
-func NewMusicService(repository repositories.MusicRepository, artistRepository repositories.ArtistRepository, companyRepository repositories.CompanyRepository) MusicService {
+func NewMusicService(conn *gorm.DB, repository repositories.MusicRepository, artistRepository repositories.ArtistRepository, companyRepository repositories.CompanyRepository) MusicService {
 	return &musicService{
+		conn:              conn,
 		repository:        repository,
 		artistRepository:  artistRepository,
 		companyRepository: companyRepository,
@@ -137,8 +140,60 @@ func (service *musicService) FindAllData() ([]*entities.MusicStructResponse, err
 	return musicResp, nil
 }
 
-func (service *musicService) SaveAllData(c *gin.Context) {
+func (service *musicService) SaveAllData(c *gin.Context) (*entities.MusicStructResponse, error) {
+	content, err := getRequestParamMusicAll(c)
+	if err != nil {
+		return nil, err
+	}
 
+	tx := service.conn.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err = tx.Error; err != nil {
+		return nil, err
+	}
+
+	// Wow!
+	artist, err := repositories.NewArtistRepository(tx).Save(content.Artist)
+	if err != nil {
+		tx.Rollback()
+		return nil, fmt.Errorf("Artist Data is Save Error")
+	}
+
+	// oh no...
+	company, err := repositories.NewCompanyRepository(tx).Save(content.Company)
+	if err != nil {
+		tx.Rollback()
+		return nil, fmt.Errorf("Company Data is Save Error")
+	}
+
+	resp := entities.Music{
+		ID:        content.ID,
+		ISWC:      content.ISWC,
+		Title:     content.Title,
+		Time:      content.Time,
+		Genre:     content.Genre,
+		ArtistID:  artist.ID,
+		CompanyID: company.ID,
+		CreatedAt: content.CreatedAt,
+		UpdatedAt: content.UpdatedAt,
+		DeletedAt: content.DeletedAt,
+	}
+
+	// i dont know... help me...
+	music, err := repositories.NewMusicRepository(tx).Save(&resp)
+	if err != nil {
+		tx.Rollback()
+		return nil, fmt.Errorf("Music Data is Save Error")
+	}
+	tx.Commit()
+
+	content.ID = music.ID
+	return content, tx.Error
 }
 
 func (service *musicService) FindAllDataByID(c *gin.Context) (*entities.MusicStructResponse, error) {

@@ -80,6 +80,7 @@ func (controller *musicController) DeleteByID(c *gin.Context) {
 	c.JSON(http.StatusOK, jsons.StatusAndMessage{Status: http.StatusOK, Message: http.StatusText(http.StatusOK)})
 }
 
+// curl -v -X GET http://localhost:8080/api/v2/musics
 func (controller *musicController) FindAllData(c *gin.Context) {
 	musics, err := controller.service.FindAllData()
 	if err != nil {
@@ -89,10 +90,17 @@ func (controller *musicController) FindAllData(c *gin.Context) {
 	c.JSON(http.StatusOK, jsons.StatusAndMusicListStructResponse{Status: http.StatusOK, Data: musics})
 }
 
+// curl -v -X POST -H "Content-type: application/json" -d '{"iswc":"A123456789T","title":"Are you seeing anyone?","time":9,"genre":"Rock","artist":{"name":"new wave","email":"nami@example.com","birth":"20200101","gender":"mixed","address":"Kyoto"},"company":{"name":"Mad co.,ltd","email":"m@example.com","address":"Kyoto"}}' http://localhost:8080/api/v2/music
 func (controller *musicController) SaveAllData(c *gin.Context) {
-
+	music, err := controller.service.SaveAllData(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, jsons.StatusAndMusicStructResponse{Status: http.StatusOK, Data: music})
 }
 
+// curl -v -X GET http://localhost:8080/api/v2/music/1
 func (controller *musicController) FindAllDataByID(c *gin.Context) {
 	music, err := controller.service.FindAllDataByID(c)
 	if err != nil {
