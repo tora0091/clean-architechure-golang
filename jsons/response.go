@@ -38,3 +38,13 @@ type StatusAndMusicList struct {
 	Status int               `json:"status"`
 	Data   []*entities.Music `json:"data"`
 }
+
+type StatusAndMusicStructResponse struct {
+	Status int                           `json:"status"`
+	Data   *entities.MusicStructResponse `json:"data"`
+}
+
+type StatusAndMusicListStructResponse struct {
+	Status int                             `json:"status"`
+	Data   []*entities.MusicStructResponse `json:"data"`
+}

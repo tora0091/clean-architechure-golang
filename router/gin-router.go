@@ -30,5 +30,12 @@ func InitRouter(dbconn *gorm.DB) *gin.Engine {
 		v1.PUT("/company/:id", handlers.CompanyHandler(dbconn).UpdateByID)
 		v1.DELETE("/company/:id", handlers.CompanyHandler(dbconn).DeleteByID)
 	}
+
+	v2 := r.Group("/api/v2")
+	{
+		v2.GET("/musics", handlers.MusicHandler(dbconn).FindAllData)
+		v2.POST("/music", handlers.MusicHandler(dbconn).SaveAllData)
+		v2.GET("/music/:id", handlers.MusicHandler(dbconn).FindAllDataByID)
+	}
 	return r
 }

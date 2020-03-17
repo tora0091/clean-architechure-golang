@@ -36,3 +36,16 @@ type Company struct {
 	UpdatedAt time.Time  `json:"updated_at" gorm:"column:updated_at"`
 	DeletedAt *time.Time `json:"deleted_at" gorm:"column:deleted_at"`
 }
+
+type MusicStructResponse struct {
+	ID        int        `json:"id"`
+	ISWC      string     `json:"iswc"`
+	Title     string     `json:"title"`
+	Time      int        `json:"time"`
+	Genre     string     `json:"genre"`
+	Artist    *Artist    `json:"artist"`
+	Company   *Company   `json:"company"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
+	DeletedAt *time.Time `json:"deleted_at"`
+}

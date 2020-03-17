@@ -16,6 +16,9 @@ type MusicService interface {
 	FindByID(c *gin.Context) (*entities.Music, error)
 	UpdateByID(c *gin.Context) (*entities.Music, error)
 	DeleteByID(c *gin.Context) error
+	FindAllData() ([]*entities.MusicStructResponse, error)
+	SaveAllData(c *gin.Context)
+	FindAllDataByID(c *gin.Context) (*entities.MusicStructResponse, error)
 }
 
 type musicService struct {
@@ -107,16 +110,90 @@ func (service *musicService) DeleteByID(c *gin.Context) error {
 	return nil
 }
 
+func (service *musicService) FindAllData() ([]*entities.MusicStructResponse, error) {
+	musics, err := service.repository.FindAll()
+	if err != nil {
+		return nil, err
+	}
+
+	var musicResp []*entities.MusicStructResponse
+	for _, music := range musics {
+		artist, _ := service.getArtistByID(music)
+		company, _ := service.getCompanyByID(music)
+		resp := entities.MusicStructResponse{
+			ID:        music.ID,
+			ISWC:      music.ISWC,
+			Title:     music.Title,
+			Time:      music.Time,
+			Genre:     music.Genre,
+			Artist:    artist,
+			Company:   company,
+			CreatedAt: music.CreatedAt,
+			UpdatedAt: music.UpdatedAt,
+			DeletedAt: music.DeletedAt,
+		}
+		musicResp = append(musicResp, &resp)
+	}
+	return musicResp, nil
+}
+
+func (service *musicService) SaveAllData(c *gin.Context) {
+
+}
+
+func (service *musicService) FindAllDataByID(c *gin.Context) (*entities.MusicStructResponse, error) {
+	id, err := getIDParam(c)
+	if err != nil {
+		return nil, err
+	}
+
+	music, err := service.repository.FindByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	artist, _ := service.getArtistByID(music)
+	company, _ := service.getCompanyByID(music)
+	resp := entities.MusicStructResponse{
+		ID:        music.ID,
+		ISWC:      music.ISWC,
+		Title:     music.Title,
+		Time:      music.Time,
+		Genre:     music.Genre,
+		Artist:    artist,
+		Company:   company,
+		CreatedAt: music.CreatedAt,
+		UpdatedAt: music.UpdatedAt,
+		DeletedAt: music.DeletedAt,
+	}
+	return &resp, nil
+}
+
 func (service *musicService) checkIDs(music *entities.Music) error {
-	_, err := service.artistRepository.FindByID(music.ArtistID)
+	_, err := service.getArtistByID(music)
 	if err != nil {
-		return fmt.Errorf("Artist ID is not Found. Check your artist ID")
+		return err
 	}
 
-	_, err = service.companyRepository.FindByID(music.CompanyID)
+	_, err = service.getCompanyByID(music)
 	if err != nil {
-		return fmt.Errorf("Company ID is not Found. Check your company ID")
+		return err
 	}
-
 	return nil
+}
+
+func (service *musicService) getArtistByID(music *entities.Music) (*entities.Artist, error) {
+	artist, err := service.artistRepository.FindByID(music.ArtistID)
+	if err != nil {
+		return nil, fmt.Errorf("Artist ID is not Found. Check your artist ID")
+	}
+	return artist, nil
+}
+
+func (service *musicService) getCompanyByID(music *entities.Music) (*entities.Company, error) {
+	company, err := service.companyRepository.FindByID(music.CompanyID)
+	if err != nil {
+		return nil, fmt.Errorf("Company ID is not Found. Check your company ID")
+	}
+	return company, nil
 }

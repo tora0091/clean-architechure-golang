@@ -15,6 +15,9 @@ type MusicController interface {
 	FindByID(c *gin.Context)
 	UpdateByID(c *gin.Context)
 	DeleteByID(c *gin.Context)
+	FindAllData(c *gin.Context)
+	SaveAllData(c *gin.Context)
+	FindAllDataByID(c *gin.Context)
 }
 
 type musicController struct {
@@ -75,4 +78,26 @@ func (controller *musicController) DeleteByID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, jsons.StatusAndMessage{Status: http.StatusOK, Message: http.StatusText(http.StatusOK)})
+}
+
+func (controller *musicController) FindAllData(c *gin.Context) {
+	musics, err := controller.service.FindAllData()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, jsons.StatusAndMusicListStructResponse{Status: http.StatusOK, Data: musics})
+}
+
+func (controller *musicController) SaveAllData(c *gin.Context) {
+
+}
+
+func (controller *musicController) FindAllDataByID(c *gin.Context) {
+	music, err := controller.service.FindAllDataByID(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, jsons.StatusAndMusicStructResponse{Status: http.StatusOK, Data: music})
 }
