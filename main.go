@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,6 +16,11 @@ func main() {
 	config.ReadConf()
 
 	dbconn := databases.NewDatabase().DbConnection()
+	defer func() {
+		if err := dbconn.Close(); err != nil {
+			log.Printf("Fail to db connection close. %v\n", err)
+		}
+	}()
 
 	gin.SetMode(getGinMode())
 	r := router.InitRouter(dbconn)
