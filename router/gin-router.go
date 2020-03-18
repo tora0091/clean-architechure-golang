@@ -1,6 +1,9 @@
 package router
 
 import (
+	"clean-architechure-golang/jsons"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 
@@ -37,5 +40,9 @@ func InitRouter(dbconn *gorm.DB) *gin.Engine {
 		v2.POST("/music", handlers.MusicHandler(dbconn).SaveAllData)
 		v2.GET("/music/:id", handlers.MusicHandler(dbconn).FindAllDataByID)
 	}
+
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, jsons.StatusAndMessage{Status: http.StatusNotFound, Message: "Route Not Found"})
+	})
 	return r
 }
