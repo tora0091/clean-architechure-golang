@@ -34,7 +34,7 @@ func (repository *companyRepository) FindAll() ([]*entities.Company, error) {
 	if len(company) > 0 {
 		return company, nil
 	}
-	return nil, fmt.Errorf("Record Not Found")
+	return nil, fmt.Errorf(config.Conf.Message.RecordNotFound)
 }
 
 func (repository *companyRepository) Save(company *entities.Company) (*entities.Company, error) {
@@ -45,7 +45,7 @@ func (repository *companyRepository) Save(company *entities.Company) (*entities.
 	if db.NewRecord(company) == false {
 		return company, nil
 	}
-	return nil, fmt.Errorf("New Record Save Error")
+	return nil, fmt.Errorf(config.Conf.Message.SaveError)
 }
 
 func (repository *companyRepository) FindByID(id int) (*entities.Company, error) {
@@ -54,7 +54,7 @@ func (repository *companyRepository) FindByID(id int) (*entities.Company, error)
 	var company entities.Company
 	recordNotFound := db.First(&company, id).RecordNotFound()
 	if recordNotFound {
-		return nil, fmt.Errorf("Record Not Found")
+		return nil, fmt.Errorf(config.Conf.Message.RecordNotFound)
 	}
 	return &company, nil
 }

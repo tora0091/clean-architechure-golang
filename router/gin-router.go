@@ -1,6 +1,7 @@
 package router
 
 import (
+	"clean-architechure-golang/config"
 	"clean-architechure-golang/jsons"
 	"net/http"
 
@@ -42,10 +43,10 @@ func InitRouter(dbconn *gorm.DB) *gin.Engine {
 	}
 
 	r.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, jsons.ResponseMessage{Message: "Route Not Found"})
+		c.JSON(http.StatusNotFound, jsons.ResponseMessage{Message: config.Conf.Message.RouteNotFound})
 	})
 	r.NoMethod(func(c *gin.Context) {
-		c.JSON(http.StatusMethodNotAllowed, jsons.ResponseMessage{Message: "Method Not Allowed"})
+		c.JSON(http.StatusMethodNotAllowed, jsons.ResponseMessage{Message: config.Conf.Message.MethodNotAllowed})
 	})
 	return r
 }

@@ -16,3 +16,9 @@ table:
   music: "music"
   artist: "artist"
   company: "company"
+
+message:
+  routeNotFound: "Route Not Found"
+  methodNotAllowed: "Method Not Allowed"
+  recordNotFound: "Record Not Found"
+  saveError: "New Record Save Error"

@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"clean-architechure-golang/config"
 	"clean-architechure-golang/jsons"
 	"clean-architechure-golang/services"
 )
@@ -31,6 +32,10 @@ func NewArtistController(service services.ArtistService) ArtistController {
 func (controller *artistController) FindAll(c *gin.Context) {
 	artists, err := controller.service.FindAll()
 	if err != nil {
+		if err.Error() == config.Conf.Message.RecordNotFound {
+			c.JSON(http.StatusNotFound, jsons.ResponseMessage{Message: err.Error()})
+			return
+		}
 		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}
@@ -51,6 +56,10 @@ func (controller *artistController) Save(c *gin.Context) {
 func (controller *artistController) FindByID(c *gin.Context) {
 	artist, err := controller.service.FindByID(c)
 	if err != nil {
+		if err.Error() == config.Conf.Message.RecordNotFound {
+			c.JSON(http.StatusNotFound, jsons.ResponseMessage{Message: err.Error()})
+			return
+		}
 		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}

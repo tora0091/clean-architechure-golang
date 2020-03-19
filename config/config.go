@@ -2,7 +2,6 @@ package config
 
 import (
 	"log"
-	"os"
 
 	"github.com/spf13/viper"
 )
@@ -27,6 +26,12 @@ type config struct {
 		Artist  string
 		Company string
 	}
+	Message struct {
+		RouteNotFound    string
+		MethodNotAllowed string
+		RecordNotFound   string
+		SaveError        string
+	}
 }
 
 var Conf config
@@ -41,11 +46,9 @@ func ReadConf() {
 
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatalln(err.Error())
-		os.Exit(1)
 	}
 
 	if err := viper.Unmarshal(c); err != nil {
 		log.Fatalln(err.Error())
-		os.Exit(1)
 	}
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"clean-architechure-golang/config"
 	"clean-architechure-golang/jsons"
 	"clean-architechure-golang/services"
 )
@@ -34,6 +35,10 @@ func NewMusicController(service services.MusicService) MusicController {
 func (controller *musicController) FindAll(c *gin.Context) {
 	musics, err := controller.service.FindAll()
 	if err != nil {
+		if err.Error() == config.Conf.Message.RecordNotFound {
+			c.JSON(http.StatusNotFound, jsons.ResponseMessage{Message: err.Error()})
+			return
+		}
 		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}
@@ -54,6 +59,10 @@ func (controller *musicController) Save(c *gin.Context) {
 func (controller *musicController) FindByID(c *gin.Context) {
 	music, err := controller.service.FindByID(c)
 	if err != nil {
+		if err.Error() == config.Conf.Message.RecordNotFound {
+			c.JSON(http.StatusNotFound, jsons.ResponseMessage{Message: err.Error()})
+			return
+		}
 		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}
@@ -84,6 +93,10 @@ func (controller *musicController) DeleteByID(c *gin.Context) {
 func (controller *musicController) FindAllData(c *gin.Context) {
 	musics, err := controller.service.FindAllData()
 	if err != nil {
+		if err.Error() == config.Conf.Message.RecordNotFound {
+			c.JSON(http.StatusNotFound, jsons.ResponseMessage{Message: err.Error()})
+			return
+		}
 		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}
@@ -104,6 +117,10 @@ func (controller *musicController) SaveAllData(c *gin.Context) {
 func (controller *musicController) FindAllDataByID(c *gin.Context) {
 	music, err := controller.service.FindAllDataByID(c)
 	if err != nil {
+		if err.Error() == config.Conf.Message.RecordNotFound {
+			c.JSON(http.StatusNotFound, jsons.ResponseMessage{Message: err.Error()})
+			return
+		}
 		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}

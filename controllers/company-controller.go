@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"clean-architechure-golang/config"
 	"clean-architechure-golang/jsons"
 	"clean-architechure-golang/services"
 )
@@ -31,6 +32,10 @@ func NewCompanyController(service services.CompanyService) CompanyController {
 func (controller *companyController) FindAll(c *gin.Context) {
 	companies, err := controller.service.FindAll()
 	if err != nil {
+		if err.Error() == config.Conf.Message.RecordNotFound {
+			c.JSON(http.StatusNotFound, jsons.ResponseMessage{Message: err.Error()})
+			return
+		}
 		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}
@@ -51,6 +56,10 @@ func (controller *companyController) Save(c *gin.Context) {
 func (controller *companyController) FindByID(c *gin.Context) {
 	company, err := controller.service.FindByID(c)
 	if err != nil {
+		if err.Error() == config.Conf.Message.RecordNotFound {
+			c.JSON(http.StatusNotFound, jsons.ResponseMessage{Message: err.Error()})
+			return
+		}
 		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}

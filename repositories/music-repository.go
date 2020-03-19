@@ -34,7 +34,7 @@ func (repository *musicRepository) FindAll() ([]*entities.Music, error) {
 	if len(musics) > 0 {
 		return musics, nil
 	}
-	return nil, fmt.Errorf("Record Not Found")
+	return nil, fmt.Errorf(config.Conf.Message.RecordNotFound)
 }
 
 func (repository *musicRepository) Save(music *entities.Music) (*entities.Music, error) {
@@ -45,7 +45,7 @@ func (repository *musicRepository) Save(music *entities.Music) (*entities.Music,
 	if db.NewRecord(music) == false {
 		return music, nil
 	}
-	return nil, fmt.Errorf("New Record Save Error")
+	return nil, fmt.Errorf(config.Conf.Message.SaveError)
 }
 
 func (repository *musicRepository) FindByID(id int) (*entities.Music, error) {
@@ -54,7 +54,7 @@ func (repository *musicRepository) FindByID(id int) (*entities.Music, error) {
 	var music entities.Music
 	recordNotFound := db.First(&music, id).RecordNotFound()
 	if recordNotFound {
-		return nil, fmt.Errorf("Record Not Found")
+		return nil, fmt.Errorf(config.Conf.Message.RecordNotFound)
 	}
 	return &music, nil
 }
