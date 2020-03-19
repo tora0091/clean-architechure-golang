@@ -4,47 +4,47 @@ import (
 	"clean-architechure-golang/entities"
 )
 
-type StatusAndMessage struct {
-	Status  int    `json:"status"`
+type ResponseMessage struct {
+	// Status  int    `json:"status"`
 	Message string `json:"message"`
 }
 
-type StatusAndArtist struct {
-	Status int              `json:"status"`
-	Data   *entities.Artist `json:"data"`
+type ResponseArtist struct {
+	// Status int              `json:"status"`
+	Data *entities.Artist `json:"data"`
 }
 
-type StatusAndArtistList struct {
-	Status int                `json:"status"`
-	Data   []*entities.Artist `json:"data"`
+type ResponseArtistList struct {
+	// Status int                `json:"status"`
+	Data []*entities.Artist `json:"data"`
 }
 
-type StatusAndCompany struct {
-	Status int               `json:"status"`
-	Data   *entities.Company `json:"data"`
+type ResponseCompany struct {
+	// Status int               `json:"status"`
+	Data *entities.Company `json:"data"`
 }
 
-type StatusAndCompanyList struct {
-	Status int                 `json:"status"`
-	Data   []*entities.Company `json:"data"`
+type ResponseCompanyList struct {
+	// Status int                 `json:"status"`
+	Data []*entities.Company `json:"data"`
 }
 
-type StatusAndMusic struct {
-	Status int             `json:"status"`
-	Data   *entities.Music `json:"data"`
+type ResponseMusic struct {
+	// Status int             `json:"status"`
+	Data *entities.Music `json:"data"`
 }
 
-type StatusAndMusicList struct {
-	Status int               `json:"status"`
-	Data   []*entities.Music `json:"data"`
+type ResponseMusicList struct {
+	// Status int               `json:"status"`
+	Data []*entities.Music `json:"data"`
 }
 
-type StatusAndMusicStructResponse struct {
-	Status int                           `json:"status"`
-	Data   *entities.MusicStructResponse `json:"data"`
+type ResponseMusicStructResponse struct {
+	// Status int                           `json:"status"`
+	Data *entities.MusicStructResponse `json:"data"`
 }
 
-type StatusAndMusicListStructResponse struct {
-	Status int                             `json:"status"`
-	Data   []*entities.MusicStructResponse `json:"data"`
+type ResponseMusicListStructResponse struct {
+	// Status int                             `json:"status"`
+	Data []*entities.MusicStructResponse `json:"data"`
 }

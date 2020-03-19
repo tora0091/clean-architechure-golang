@@ -42,7 +42,10 @@ func InitRouter(dbconn *gorm.DB) *gin.Engine {
 	}
 
 	r.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, jsons.StatusAndMessage{Status: http.StatusNotFound, Message: "Route Not Found"})
+		c.JSON(http.StatusNotFound, jsons.ResponseMessage{Message: "Route Not Found"})
+	})
+	r.NoMethod(func(c *gin.Context) {
+		c.JSON(http.StatusMethodNotAllowed, jsons.ResponseMessage{Message: "Method Not Allowed"})
 	})
 	return r
 }

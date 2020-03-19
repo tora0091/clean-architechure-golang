@@ -31,48 +31,48 @@ func NewArtistController(service services.ArtistService) ArtistController {
 func (controller *artistController) FindAll(c *gin.Context) {
 	artists, err := controller.service.FindAll()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, jsons.StatusAndArtistList{Status: http.StatusOK, Data: artists})
+	c.JSON(http.StatusOK, jsons.ResponseArtistList{Data: artists})
 }
 
 // curl -v -X POST -H "Content-type: application/json" -d '{"name":"ai kimura","email":"ai@example.com","birth":"19970903","gender":"nomal","address":"Tokyo"}' http://localhost:8080/api/v1/artist
 func (controller *artistController) Save(c *gin.Context) {
 	artist, err := controller.service.Save(c)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, jsons.StatusAndArtist{Status: http.StatusOK, Data: artist})
+	c.JSON(http.StatusOK, jsons.ResponseArtist{Data: artist})
 }
 
 // curl -v -X GET http://localhost:8080/api/v1/artist/1
 func (controller *artistController) FindByID(c *gin.Context) {
 	artist, err := controller.service.FindByID(c)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, jsons.StatusAndArtist{Status: http.StatusOK, Data: artist})
+	c.JSON(http.StatusOK, jsons.ResponseArtist{Data: artist})
 }
 
 // curl -v -X PUT -H "Content-type: application/json" -d '{"name":"rei izumi","email":"rei@example.com","birth":"20000903","gender":"boy","address":"Osaka"}' http://localhost:8080/api/v1/artist/2
 func (controller *artistController) UpdateByID(c *gin.Context) {
 	artist, err := controller.service.UpdateByID(c)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, jsons.StatusAndArtist{Status: http.StatusOK, Data: artist})
+	c.JSON(http.StatusOK, jsons.ResponseArtist{Data: artist})
 }
 
 // curl -v -X DELETE http://localhost:8080/api/v1/artist/3
 func (controller *artistController) DeleteByID(c *gin.Context) {
 	err := controller.service.DeleteByID(c)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, jsons.StatusAndMessage{Status: http.StatusBadRequest, Message: err.Error()})
+		c.JSON(http.StatusBadRequest, jsons.ResponseMessage{Message: err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, jsons.StatusAndMessage{Status: http.StatusOK, Message: http.StatusText(http.StatusOK)})
+	c.JSON(http.StatusOK, jsons.ResponseMessage{Message: http.StatusText(http.StatusOK)})
 }
